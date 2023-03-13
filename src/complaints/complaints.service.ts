@@ -1,21 +1,11 @@
 import { Injectable } from '@nestjs/common';
-
+import { PrismaService } from '../prisma/prisma.service';
 @Injectable()
 export class ComplaintsService {
+  constructor(private prisma: PrismaService) {}
+
   async getComplaints() {
-    return [
-      {
-        ticket_id: '1677830978',
-        sender_id: '12345678',
-        address: 'Laguna',
-        branch: 'Laguna',
-        contact: '+639272792254',
-        model: 'FZI',
-        remarks: null,
-        tag: 'parts',
-        ticket_status: 'CRITICAL',
-        concerns: null,
-      },
-    ];
+    const complaints = this.prisma.complaints.findMany();
+    return complaints;
   }
 }
