@@ -9,3 +9,26 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Complaints {
+  ticket_id     Float      @id
+  sender_id     Int
+  address       String
+  contact       String
+  model         String
+  remarks       String?
+  tag           String
+  ticket_status String
+  concerns      String?
+  Messages      Messages[]
+}
+
+model Messages {
+  ticket_id    Float  @id
+  datetime     Int
+  from         String
+  message      String
+  last_message String
+
+  complaints Complaints @relation(fields: [ticket_id], references: [ticket_id])
+}
