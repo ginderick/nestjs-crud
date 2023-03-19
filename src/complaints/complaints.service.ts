@@ -13,13 +13,34 @@ export class ComplaintsService {
 
   async createComplaints(createComplaintsDto: CreateComplaintsDto) {
     const ticketId = Date.now() / 1000;
+    const complaints = {
+      ticket_id: ticketId,
+      sender_id: createComplaintsDto.sender_id,
+      address: createComplaintsDto.address,
+      contact: createComplaintsDto.contact,
+      model: createComplaintsDto.model,
+      tag: createComplaintsDto.tag,
+      ticket_status: createComplaintsDto.ticket_status,
+    };
 
-    const complaints = { ticket_id: ticketId, ...createComplaintsDto };
+    const message = {
+      ticket_id: ticketId,
+      datetime: Math.floor(ticketId),
+      from: createComplaintsDto.name,
+      message: createComplaintsDto.message,
+      last_message: '',
+    };
 
     try {
-      const createComplaints = await this.prisma.complaints.create({
-        data: { ...complaints },
-      });
+      const createComplaints = await this.prisma.$transaction([
+        this.prisma.complaints.create({
+          data: { ...complaints },
+        }),
+        this.prisma.messages.create({
+          data: { ...message },
+        }),
+      ]);
+
       return createComplaints;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -29,7 +50,8 @@ export class ComplaintsService {
           );
         }
       }
-      throw new BadRequestException();
+      console.log(error);
+      throw new BadRequestException('Validation');
     }
   }
 }
