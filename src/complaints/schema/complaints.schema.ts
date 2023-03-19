@@ -1,5 +1,13 @@
-import * as Joi from 'joi';
+import { z } from 'zod';
 
-export const createComplaintsSchema = Joi.object({
-  ticket_id: Joi.string().required(),
+export const createComplaintsSchema = z.object({
+  ticket_id: z.number(),
+  sender_id: z.number(),
+  address: z.string(),
+  contact: z.string(),
+  model: z.string(),
+  remarks: z.string(),
+  tag: z.string(),
+  ticket_status: z.string(),
+  concerns: z.string(),
 });
