@@ -12,16 +12,20 @@ export class ComplaintsService {
   }
 
   async createComplaints(createComplaintsDto: CreateComplaintsDto) {
+    const ticketId = Date.now() / 1000;
+
+    const complaints = { ticket_id: ticketId, ...createComplaintsDto };
+
     try {
-      const complaints = await this.prisma.complaints.create({
-        data: { ...createComplaintsDto },
+      const createComplaints = await this.prisma.complaints.create({
+        data: { ...complaints },
       });
-      return complaints;
+      return createComplaints;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
           console.log(
-            'There is a unique constraint violation, a new complaint cannot be created with this ticket it',
+            'There is a unique constraint violation, a new complaint cannot be created with this ticket id',
           );
         }
       }
