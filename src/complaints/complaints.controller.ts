@@ -15,7 +15,7 @@ export class ComplaintsController {
 
   @Post('complaints')
   @UsePipes(new ZodValidationPipe(createComplaintsSchema))
-  createComplaint(@Body() complaintsDto: CreateComplaintsDto) {
-    return this.complaintsService.createComplaints(complaintsDto);
+  async createComplaint(@Body() complaintsDto: CreateComplaintsDto) {
+    return await this.complaintsService.createComplaints(complaintsDto);
   }
 }
