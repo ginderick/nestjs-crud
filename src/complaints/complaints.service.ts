@@ -11,6 +11,9 @@ export class ComplaintsService {
   }
 
   async createComplaints(createComplaintsDto: CreateComplaintsDto) {
-    return 'Creating complaints';
+    const complaints = this.prisma.complaints.create({
+      data: { ...createComplaintsDto },
+    });
+    return complaints;
   }
 }

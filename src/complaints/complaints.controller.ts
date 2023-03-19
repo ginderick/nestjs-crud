@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, UsePipes } from '@nestjs/common';
-import { JoiValidationPipe } from 'src/common/pipes/validation.pipe';
+import { ZodValidationPipe } from 'src/common/pipes/validation.pipe';
 import { ComplaintsService } from './complaints.service';
 import { CreateComplaintsDto } from './dto';
 import { createComplaintsSchema } from './schema/complaints.schema';
@@ -14,7 +14,7 @@ export class ComplaintsController {
   }
 
   @Post('complaints')
-  @UsePipes(new JoiValidationPipe(createComplaintsSchema))
+  @UsePipes(new ZodValidationPipe(createComplaintsSchema))
   createComplaint(@Body() complaintsDto: CreateComplaintsDto) {
     return this.complaintsService.createComplaints(complaintsDto);
   }
