@@ -13,18 +13,8 @@ export class ComplaintsService {
 
   async createComplaints(createComplaintsDto: CreateComplaintsDto) {
     const ticketId = Date.now() / 1000;
-    const complaints = {
-      ticket_id: ticketId,
-      sender_id: createComplaintsDto.sender_id,
-      address: createComplaintsDto.address,
-      contact: createComplaintsDto.contact,
-      model: createComplaintsDto.model,
-      tag: createComplaintsDto.tag,
-      ticket_status: createComplaintsDto.ticket_status,
-    };
 
     const message = {
-      ticket_id: ticketId,
       datetime: Math.floor(ticketId),
       from: createComplaintsDto.name,
       message: createComplaintsDto.message,
@@ -32,14 +22,20 @@ export class ComplaintsService {
     };
 
     try {
-      const createComplaints = await this.prisma.$transaction([
-        this.prisma.complaints.create({
-          data: { ...complaints },
-        }),
-        this.prisma.messages.create({
-          data: { ...message },
-        }),
-      ]);
+      const createComplaints = await this.prisma.complaints.create({
+        data: {
+          ticket_id: ticketId,
+          sender_id: createComplaintsDto.sender_id,
+          address: createComplaintsDto.address,
+          contact: createComplaintsDto.contact,
+          model: createComplaintsDto.model,
+          tag: createComplaintsDto.tag,
+          ticket_status: createComplaintsDto.ticket_status,
+          Messages: {
+            create: [{ ...message }],
+          },
+        },
+      });
 
       return createComplaints;
     } catch (error) {
