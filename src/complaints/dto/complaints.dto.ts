@@ -1,5 +1,4 @@
 export class CreateComplaintsDto {
-  ticket_id: number;
   sender_id: number;
   address: string;
   contact: string;
