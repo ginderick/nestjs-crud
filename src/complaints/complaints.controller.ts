@@ -9,8 +9,8 @@ export class ComplaintsController {
   constructor(private complaintsService: ComplaintsService) {}
 
   @Get('complaints')
-  getComplaints() {
-    return this.complaintsService.getComplaints();
+  async getComplaints() {
+    return await this.complaintsService.getComplaints();
   }
 
   @Post('complaints')

@@ -7,7 +7,7 @@ export class ComplaintsService {
   constructor(private prisma: PrismaService) {}
 
   async getComplaints() {
-    const complaints = this.prisma.complaints.findMany();
+    const complaints = await this.prisma.complaints.findMany();
     return complaints;
   }
 
