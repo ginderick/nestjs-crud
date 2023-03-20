@@ -17,15 +17,10 @@ export class JoiValidationPipe implements PipeTransform {
 
 @Injectable()
 export class ZodValidationPipe implements PipeTransform {
-  constructor(private schema: ZodTypeAny) {
-    console.log(schema);
-  }
+  constructor(private schema: ZodTypeAny) {}
 
   transform(value: any) {
-    console.log(value);
-    console.log(typeof value);
     const result = this.schema.safeParse(value);
-    console.log(result);
     if (result.success === false) {
       throw new BadRequestException('Validation Failed', `${result.error}`);
     }
@@ -35,8 +30,13 @@ export class ZodValidationPipe implements PipeTransform {
 
 @Injectable()
 export class TagValidationPipe implements PipeTransform {
-  transform(value: any) {
+  transform(value: string | undefined) {
     const tagList = ['PARTS', 'ACCESSORIES'];
+
+    if (value === undefined) {
+      return;
+    }
+
     if (tagList.includes(value)) {
       return value;
     }
@@ -46,8 +46,13 @@ export class TagValidationPipe implements PipeTransform {
 
 @Injectable()
 export class TicketStatusValidationPipe implements PipeTransform {
-  transform(value: any) {
+  transform(value: string | undefined) {
     const statusList = ['NEW', 'IN PROGRESS'];
+
+    if (value === undefined) {
+      return;
+    }
+
     if (statusList.includes(value)) {
       return value;
     }
