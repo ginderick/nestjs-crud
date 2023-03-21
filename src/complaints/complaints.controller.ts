@@ -14,8 +14,8 @@ export class ComplaintsController {
   constructor(private complaintsService: ComplaintsService) {}
 
   @Get('complaints')
-  async getComplaints() {
-    return await this.complaintsService.getComplaints();
+  async getComplaints(@Query('page') page: number) {
+    return await this.complaintsService.getComplaints(page);
   }
 
   @Post('complaints')
@@ -28,10 +28,12 @@ export class ComplaintsController {
   @ApiQuery({ name: 'ticket_status', required: false, type: String })
   @Get('filter-results')
   async filterComplaints(
+    @Query('page') page: number,
     @Query('tag', TagValidationPipe) tag?: string,
     @Query('ticket_status', TicketStatusValidationPipe) ticket_status?: string,
   ) {
     return await this.complaintsService.getFilteredComplaints(
+      page,
       tag,
       ticket_status,
     );

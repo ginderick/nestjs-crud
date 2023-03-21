@@ -6,8 +6,10 @@ import { CreateComplaintsDto } from './dto/complaints.dto';
 export class ComplaintsService {
   constructor(private prisma: PrismaService) {}
 
-  async getComplaints() {
+  async getComplaints(page = 1) {
     const complaints = await this.prisma.complaints.findMany({
+      skip: 5 * (page - 1),
+      take: 5,
       include: { Messages: true },
     });
     return complaints;
@@ -53,8 +55,10 @@ export class ComplaintsService {
     }
   }
 
-  async getFilteredComplaints(tag?: string, ticket_status?: string) {
+  async getFilteredComplaints(page = 1, tag?: string, ticket_status?: string) {
     const complaints = await this.prisma.complaints.findMany({
+      skip: 5 * (page - 1),
+      take: 5,
       where: {
         OR: [
           { tag: { contains: tag } },
