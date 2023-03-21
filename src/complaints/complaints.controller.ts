@@ -31,6 +31,9 @@ export class ComplaintsController {
     @Query('tag', TagValidationPipe) tag?: string,
     @Query('ticket_status', TicketStatusValidationPipe) ticket_status?: string,
   ) {
-    return { ticket_status };
+    return await this.complaintsService.getFilteredComplaints(
+      tag,
+      ticket_status,
+    );
   }
 }
