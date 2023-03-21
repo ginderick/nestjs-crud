@@ -54,6 +54,16 @@ export class ComplaintsService {
   }
 
   async getFilteredComplaints(tag?: string, ticket_status?: string) {
-    return { tag, ticket_status };
+    const complaints = await this.prisma.complaints.findMany({
+      where: {
+        OR: [
+          { tag: { contains: tag } },
+          { ticket_status: { contains: ticket_status } },
+        ],
+      },
+      include: { Messages: true },
+    });
+
+    return complaints;
   }
 }
