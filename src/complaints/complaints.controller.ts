@@ -39,4 +39,9 @@ export class ComplaintsController {
       ticket_status,
     );
   }
+
+  @Get('complaint')
+  async getComplaint(@Query('ticket_id') ticket_id: number) {
+    return await this.complaintsService.getComplaint(ticket_id);
+  }
 }

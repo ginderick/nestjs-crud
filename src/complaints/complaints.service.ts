@@ -4,6 +4,15 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateComplaintsDto } from './dto/complaints.dto';
 @Injectable()
 export class ComplaintsService {
+  async getComplaint(ticket_id: number) {
+    const complaint = await this.prisma.complaints.findUnique({
+      where: {
+        ticket_id: +ticket_id,
+      },
+      include: { Messages: true },
+    });
+    return complaint;
+  }
   constructor(private prisma: PrismaService) {}
 
   async getComplaints(page = 1) {
