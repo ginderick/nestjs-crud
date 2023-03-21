@@ -24,6 +24,7 @@ export class ComplaintsController {
     return await this.complaintsService.createComplaints(complaintsDto);
   }
 
+  @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'tag', required: false, type: String })
   @ApiQuery({ name: 'ticket_status', required: false, type: String })
   @Get('filter-results')
