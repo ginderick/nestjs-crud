@@ -10,3 +10,7 @@ export class CreateComplaintsDto {
   ticket_status: string;
   concerns: string;
 }
+
+export class ComplaintsTagDto {
+  tag: string;
+}

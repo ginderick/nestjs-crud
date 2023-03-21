@@ -12,3 +12,7 @@ export const createComplaintsSchema = z.object({
   ticket_status: z.string(),
   concerns: z.string().optional(),
 });
+
+export const complaintsTagSchema = z.object({
+  tag: z.string(),
+});
