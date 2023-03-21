@@ -43,7 +43,7 @@ export class ComplaintsController {
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'tag', required: false, type: String })
   @ApiQuery({ name: 'ticket_status', required: false, type: String })
-  @Get('filter-results')
+  @Get('complaints/filter-results')
   async filterComplaints(
     @Query('page') page: number,
     @Query('tag', TagValidationPipe) tag?: string,
