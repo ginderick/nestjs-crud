@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Query,
+  UsePipes,
+} from '@nestjs/common';
 import { ApiQuery } from '@nestjs/swagger';
 import {
   TagValidationPipe,
@@ -6,12 +14,20 @@ import {
   ZodValidationPipe,
 } from 'src/common/pipes/validation.pipe';
 import { ComplaintsService } from './complaints.service';
-import { CreateComplaintsDto } from './dto';
-import { createComplaintsSchema } from './schema/complaints.schema';
+import { ComplaintsTagDto, CreateComplaintsDto } from './dto';
+import {
+  complaintsTagSchema,
+  createComplaintsSchema,
+} from './schema/complaints.schema';
 
 @Controller()
 export class ComplaintsController {
   constructor(private complaintsService: ComplaintsService) {}
+
+  @Get('complaint')
+  async getComplaint(@Query('ticket_id') ticketId: number) {
+    return await this.complaintsService.getComplaint(ticketId);
+  }
 
   @Get('complaints')
   async getComplaints(@Query('page') page: number) {
@@ -40,8 +56,16 @@ export class ComplaintsController {
     );
   }
 
-  @Get('complaint')
-  async getComplaint(@Query('ticket_id') ticket_id: number) {
-    return await this.complaintsService.getComplaint(ticket_id);
+  @Patch('complaints/tags')
+  @UsePipes()
+  async updateTag(
+    @Query('ticket_id') ticketId: number,
+    @Body(new ZodValidationPipe(complaintsTagSchema))
+    tagComplaintsDto: ComplaintsTagDto,
+  ) {
+    return await this.complaintsService.updateComplaintTag(
+      ticketId,
+      tagComplaintsDto,
+    );
   }
 }
