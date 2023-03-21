@@ -1,13 +1,13 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateComplaintsDto } from './dto/complaints.dto';
+import { ComplaintsTagDto, CreateComplaintsDto } from './dto/complaints.dto';
 @Injectable()
 export class ComplaintsService {
-  async getComplaint(ticket_id: number) {
+  async getComplaint(ticketId: number) {
     const complaint = await this.prisma.complaints.findUnique({
       where: {
-        ticket_id: +ticket_id,
+        ticket_id: +ticketId,
       },
       include: { Messages: true },
     });
@@ -78,5 +78,20 @@ export class ComplaintsService {
     });
 
     return complaints;
+  }
+
+  async updateComplaintTag(
+    ticketId: number,
+    complaintsTagDto: ComplaintsTagDto,
+  ) {
+    const complaint = await this.prisma.complaints.update({
+      where: {
+        ticket_id: +ticketId,
+      },
+      data: {
+        tag: complaintsTagDto.tag,
+      },
+    });
+    return complaint;
   }
 }
