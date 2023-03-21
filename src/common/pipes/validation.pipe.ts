@@ -47,7 +47,7 @@ export class TagValidationPipe implements PipeTransform {
 @Injectable()
 export class TicketStatusValidationPipe implements PipeTransform {
   transform(value: string | undefined) {
-    const statusList = ['NEW', 'IN PROGRESS'];
+    const statusList = ['NEW', 'IN PROGRESS', 'DONE'];
 
     if (value === undefined) {
       return;

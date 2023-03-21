@@ -52,4 +52,8 @@ export class ComplaintsService {
       throw new BadRequestException('Validation');
     }
   }
+
+  async getFilteredComplaints(tag?: string, ticket_status?: string) {
+    return { tag, ticket_status };
+  }
 }
