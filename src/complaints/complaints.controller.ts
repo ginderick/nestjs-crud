@@ -18,6 +18,7 @@ import { ComplaintsTagDto, CreateComplaintsDto } from './dto';
 import {
   complaintsTagSchema,
   createComplaintsSchema,
+  dateSchema,
 } from './schema/complaints.schema';
 
 @Controller()
@@ -57,7 +58,6 @@ export class ComplaintsController {
   }
 
   @Patch('complaints/tags')
-  @UsePipes()
   async updateTag(
     @Query('ticket_id') ticketId: number,
     @Body(new ZodValidationPipe(complaintsTagSchema))
@@ -67,5 +67,15 @@ export class ComplaintsController {
       ticketId,
       tagComplaintsDto,
     );
+  }
+
+  @Get('complaints/downloads')
+  async downloadComplaints(
+    @Query('start_date', new ZodValidationPipe(dateSchema))
+    startDate: string,
+    @Query('end_date', new ZodValidationPipe(dateSchema))
+    endDate: string,
+  ) {
+    return { startDate, endDate };
   }
 }
