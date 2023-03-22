@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { toTimestamp } from 'src/common/utilities/utils';
 import { PrismaService } from '../prisma/prisma.service';
 import { ComplaintsTagDto, CreateComplaintsDto } from './dto/complaints.dto';
 @Injectable()
@@ -101,16 +102,27 @@ export class ComplaintsService {
     endDate: string,
     ticketStatus: string,
   ) {
+    const startDateTimestamp = toTimestamp(startDate);
+    const endDateTimestamp = toTimestamp(endDate);
     const complaints = await this.prisma.complaints.findMany({
       skip: 5 * (page - 1),
       take: 5,
       where: {
         ticket_status: ticketStatus,
+        Messages: {
+          every: {
+            datetime: {
+              lte: endDateTimestamp,
+              gte: startDateTimestamp,
+            },
+          },
+        },
       },
       include: {
         Messages: true,
       },
     });
+
     return complaints;
   }
 }
