@@ -11,6 +11,7 @@ import { ApiQuery } from '@nestjs/swagger';
 import {
   TagValidationPipe,
   TicketStatusValidationPipe,
+  UpdateTicketStatusValidationPipe,
   ZodValidationPipe,
 } from 'src/common/pipes/validation.pipe';
 import { ComplaintsService } from './complaints.service';
@@ -78,7 +79,7 @@ export class ComplaintsController {
   @UsePipes()
   async updateStatus(
     @Query('ticket_id') ticketId: number,
-    @Body(new ZodValidationPipe(complaintsStatusSchema))
+    @Body(new UpdateTicketStatusValidationPipe(complaintsStatusSchema))
     statusComlpaintsDto: ComplaintsStatusDto,
   ) {
     return await this.complaintsService.updateComplaintStatus(
