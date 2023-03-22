@@ -17,6 +17,7 @@ import { ComplaintsService } from './complaints.service';
 import { ComplaintsTagDto, CreateComplaintsDto } from './dto';
 import {
   complaintsTagSchema,
+  complaintsTicketStatusSchema,
   createComplaintsSchema,
   dateSchema,
 } from './schema/complaints.schema';
@@ -69,13 +70,16 @@ export class ComplaintsController {
     );
   }
 
+  @ApiQuery({ name: 'ticket_status', required: true, type: String })
   @Get('complaints/downloads')
   async downloadComplaints(
     @Query('start_date', new ZodValidationPipe(dateSchema))
     startDate: string,
     @Query('end_date', new ZodValidationPipe(dateSchema))
     endDate: string,
+    @Query('ticket_status', new ZodValidationPipe(complaintsTicketStatusSchema))
+    ticket_status: string,
   ) {
-    return { startDate, endDate };
+    return { startDate, endDate, ticket_status };
   }
 }
