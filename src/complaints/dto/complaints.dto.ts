@@ -14,3 +14,8 @@ export class CreateComplaintsDto {
 export class ComplaintsTagDto {
   tag: string;
 }
+
+export class ComplaintsStatusDto {
+  ticket_status: string;
+  remarks?: string;
+}
