@@ -23,7 +23,9 @@ import {
 import {
   complaintsStatusSchema,
   complaintsTagSchema,
+  complaintsTicketStatusSchema,
   createComplaintsSchema,
+  dateSchema,
 } from './schema/complaints.schema';
 
 @Controller()
@@ -49,7 +51,7 @@ export class ComplaintsController {
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'tag', required: false, type: String })
   @ApiQuery({ name: 'ticket_status', required: false, type: String })
-  @Get('filter-results')
+  @Get('complaints/filter-results')
   async filterComplaints(
     @Query('page') page: number,
     @Query('tag', TagValidationPipe) tag?: string,
@@ -63,7 +65,6 @@ export class ComplaintsController {
   }
 
   @Patch('complaints/tags')
-  @UsePipes()
   async updateTag(
     @Query('ticket_id') ticketId: number,
     @Body(new ZodValidationPipe(complaintsTagSchema))
@@ -85,6 +86,25 @@ export class ComplaintsController {
     return await this.complaintsService.updateComplaintStatus(
       ticketId,
       statusComlpaintsDto,
+    );
+  }
+
+  @ApiQuery({ name: 'ticket_status', required: true, type: String })
+  @Get('complaints/downloads')
+  async downloadComplaints(
+    @Query('page') page: number,
+    @Query('start_date', new ZodValidationPipe(dateSchema))
+    startDate: string,
+    @Query('end_date', new ZodValidationPipe(dateSchema))
+    endDate: string,
+    @Query('ticket_status', new ZodValidationPipe(complaintsTicketStatusSchema))
+    ticketStatus: string,
+  ) {
+    return await this.complaintsService.downloadComplaints(
+      page,
+      startDate,
+      endDate,
+      ticketStatus,
     );
   }
 }

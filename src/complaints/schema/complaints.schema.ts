@@ -21,3 +21,7 @@ export const complaintsStatusSchema = z.object({
   ticket_status: z.string(),
   remarks: z.string().optional(),
 });
+
+export const dateSchema = z.preprocess((arg) => {
+  if (typeof arg == 'string' || arg instanceof Date) return new Date(arg);
+}, z.date());
