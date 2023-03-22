@@ -17,7 +17,10 @@ export const complaintsTagSchema = z.object({
   tag: z.string(),
 });
 
-export const complaintsTicketStatusSchema = z.string();
+export const complaintsStatusSchema = z.object({
+  ticket_status: z.string(),
+  remarks: z.string().optional(),
+});
 
 export const dateSchema = z.preprocess((arg) => {
   if (typeof arg == 'string' || arg instanceof Date) return new Date(arg);

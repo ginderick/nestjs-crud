@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 import { ObjectSchema } from 'joi';
+import { ComplaintsStatusDto } from 'src/complaints/dto';
 import { ZodTypeAny } from 'zod';
 
 @Injectable()
@@ -57,5 +58,27 @@ export class TicketStatusValidationPipe implements PipeTransform {
       return value;
     }
     throw new BadRequestException('Validation Failed');
+  }
+}
+
+@Injectable()
+export class UpdateTicketStatusValidationPipe implements PipeTransform {
+  constructor(private schema: ZodTypeAny) {}
+
+  transform(value: ComplaintsStatusDto) {
+    const result = this.schema.safeParse(value);
+
+    if (value.ticket_status === 'DONE' && value.remarks === undefined) {
+      throw new BadRequestException('Validation Failed');
+    }
+
+    if (value.ticket_status !== 'DONE' && value.remarks !== undefined) {
+      throw new BadRequestException('Validation Failed');
+    }
+    if (result.success === false) {
+      throw new BadRequestException('Validation Failed', `${result.error}`);
+    }
+
+    return value;
   }
 }
