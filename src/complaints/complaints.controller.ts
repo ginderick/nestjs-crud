@@ -23,7 +23,6 @@ import {
 import {
   complaintsStatusSchema,
   complaintsTagSchema,
-  complaintsTicketStatusSchema,
   createComplaintsSchema,
   dateSchema,
 } from './schema/complaints.schema';
@@ -97,7 +96,7 @@ export class ComplaintsController {
     startDate: string,
     @Query('end_date', new ZodValidationPipe(dateSchema))
     endDate: string,
-    @Query('ticket_status', new ZodValidationPipe(complaintsTicketStatusSchema))
+    @Query('ticket_status', new ZodValidationPipe(complaintsStatusSchema))
     ticketStatus: string,
   ) {
     return await this.complaintsService.downloadComplaints(
