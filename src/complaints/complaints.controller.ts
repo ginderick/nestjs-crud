@@ -14,8 +14,13 @@ import {
   ZodValidationPipe,
 } from 'src/common/pipes/validation.pipe';
 import { ComplaintsService } from './complaints.service';
-import { ComplaintsTagDto, CreateComplaintsDto } from './dto';
 import {
+  ComplaintsStatusDto,
+  ComplaintsTagDto,
+  CreateComplaintsDto,
+} from './dto';
+import {
+  complaintsStatusSchema,
   complaintsTagSchema,
   createComplaintsSchema,
 } from './schema/complaints.schema';
@@ -66,6 +71,19 @@ export class ComplaintsController {
     return await this.complaintsService.updateComplaintTag(
       ticketId,
       tagComplaintsDto,
+    );
+  }
+
+  @Patch('complaints/ticket-status')
+  @UsePipes()
+  async updateStatus(
+    @Query('ticket_id') ticketId: number,
+    @Body(new ZodValidationPipe(complaintsStatusSchema))
+    statusComlpaintsDto: ComplaintsStatusDto,
+  ) {
+    return await this.complaintsService.updateComplaintStatus(
+      ticketId,
+      statusComlpaintsDto,
     );
   }
 }
