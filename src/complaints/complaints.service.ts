@@ -94,4 +94,21 @@ export class ComplaintsService {
     });
     return complaint;
   }
+
+  async downloadComplaints(
+    page = 1,
+    startDate: string,
+    endDate: string,
+    ticketStatus: string,
+  ) {
+    const complaints = await this.prisma.complaints.findMany({
+      skip: 5 * (page - 1),
+      take: 5,
+      where: {
+        ticket_status: ticketStatus,
+      },
+      include: { Messages: true },
+    });
+    return complaints;
+  }
 }

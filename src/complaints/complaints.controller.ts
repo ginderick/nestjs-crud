@@ -73,13 +73,19 @@ export class ComplaintsController {
   @ApiQuery({ name: 'ticket_status', required: true, type: String })
   @Get('complaints/downloads')
   async downloadComplaints(
+    @Query('page') page: number,
     @Query('start_date', new ZodValidationPipe(dateSchema))
     startDate: string,
     @Query('end_date', new ZodValidationPipe(dateSchema))
     endDate: string,
     @Query('ticket_status', new ZodValidationPipe(complaintsTicketStatusSchema))
-    ticket_status: string,
+    ticketStatus: string,
   ) {
-    return { startDate, endDate, ticket_status };
+    return await this.complaintsService.downloadComplaints(
+      page,
+      startDate,
+      endDate,
+      ticketStatus,
+    );
   }
 }
