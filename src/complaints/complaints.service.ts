@@ -107,7 +107,9 @@ export class ComplaintsService {
       where: {
         ticket_status: ticketStatus,
       },
-      include: { Messages: true },
+      include: {
+        Messages: true,
+      },
     });
     return complaints;
   }
